@@ -18,10 +18,18 @@ class PantryTest < Minitest::Test
     assert stock.empty?
   end
 
-  def test_it_knows_what_it_has_in_stock
+  def test_it_returns_zero_if_ingredient_isnt_in_pantry
     pantry = Pantry.new
     check = pantry.stock_check('Oatmeal')
 
     assert_equal 0, check
+  end
+
+  def test_it_can_add_items_and_check_in_stock_items
+    pantry = Pantry.new
+    restock = pantry.restock('Raisins', 100)
+    check = pantry.stock_check('Raisins')
+
+    assert_equal 100, check
   end
 end
