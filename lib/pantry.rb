@@ -35,18 +35,9 @@ class Pantry
     end
   end
 
-  # def convert_units(recipe)
-  #   recipe.ingredients.map do |ingredient|
-  #     converted.store(ingredient[0], {quantity: ingredient[1], unit: 'unit'})
-  #   end
-  #   converted.map do |ingredient|
-  #     if ingredient[1][:quantity] < 1
-  #       ingredient[1][:quantity] = ingredient[1][:quantity] * 1000 && ingredient[1][:units] = "Milli-Units"
-  #     elsif ingredient[1][:quantity] > 100
-  #       ingredient[1][:quantity] = ingredient[1][:quantity] / 100 && ingredient[1][:units] = "Centi-Units"
-  #     else
-  #       ingredient[1][:quantity] = ingredient[1][:quantity] && ingredient[1][:units] = "Universal Units"
-  #     end
-  #   end
-  # end
+  def convert_units(recipe)
+    recipe.ingredients do |ingredient|
+      converted.store(ingredient[0])
+    end
+  end
 end

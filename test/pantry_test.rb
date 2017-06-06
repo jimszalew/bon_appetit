@@ -2,7 +2,6 @@ require './lib/pantry'
 require './lib/recipe'
 require 'minitest/autorun'
 require 'minitest/pride'
-require 'pry'
 
 class PantryTest < Minitest::Test
 
@@ -75,33 +74,19 @@ class PantryTest < Minitest::Test
     assert_equal 5, calculated[2]
   end
 
-  def test_it_knows_the_right_type_of_unit_after_conversion
+  def test_it_can_convert_universal_units_to_centi_and_milli
     pantry = Pantry.new
     recipe = Recipe.new('Oatmeal Raisin Cookies')
     recipe.add_ingredient('Oatmeal', 500)
-    recipe.add_ingredient('Raisins', 15)
-    recipe.add_ingredient('Brown Sugar', 0.005)
-    converted = pantry.calculate(recipe)
+    recipe.add_ingredient('Raisins', 20)
+    recipe.add_ingredient('Nutmeg', 0.05)
+    converted = pantry.convert_units(recipe)
 
+    assert_equal 5, converted[0][:quantity]
+    assert_equal 20, converted[1][:quantity]
+    assert_equal 5, converted[2][:quantity]
     assert_equal 'Centi-Units', converted['Oatmeal'][:units]
     assert_equal 'Universal Units', converted['Raisins'][:units]
     assert_equal 'Milli-Units', converted['Nutmeg'][:units]
   end
-
-  end
-  # def test_it_can_convert_universal_units_to_centi_and_milli
-  #   pantry = Pantry.new
-  #   recipe = Recipe.new('Oatmeal Raisin Cookies')
-  #   recipe.add_ingredient('Oatmeal', 500)
-  #   recipe.add_ingredient('Raisins', 20)
-  #   recipe.add_ingredient('Nutmeg', 0.05)
-  #   converted = pantry.convert_units(recipe)
-  # # binding.pry
-  #   assert_equal 5, converted[0][:quantity]
-  #   assert_equal 20, converted[1][:quantity]
-  #   assert_equal 5, converted[2][:quantity]
-  #   assert_equal 'Centi-Units', converted['Oatmeal'][:units]
-  #   assert_equal 'Universal Units', converted['Raisins'][:units]
-  #   assert_equal 'Milli-Units', converted['Nutmeg'][:units]
-  # end
 end
