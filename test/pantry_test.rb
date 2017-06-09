@@ -2,6 +2,7 @@ require './lib/pantry'
 require './lib/recipe'
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'pry'
 
 class PantryTest < Minitest::Test
 
@@ -60,33 +61,34 @@ class PantryTest < Minitest::Test
     assert_equal 5, recipe.ingredients['Brown Sugar']
   end
 
-  def test_it_can_convert_units
+  def test_it_can_convert_recipe_to_readable_format
     pantry = Pantry.new
     recipe = Recipe.new('Oatmeal Raisin Cookies')
-    recipe.add_ingredient('Oatmeal', 500)
+    recipe.add_ingredient('Oatmeal', 250)
     recipe.add_ingredient('Raisins', 15)
     recipe.add_ingredient('Brown Sugar', 0.005)
-    calculated = pantry.calculate(recipe)
+# binding.pry
+    expected = {"Oatmeal"     => {quantity: 250, units: ""},
+                "Raisins"     => {quantity: 15, units: ""},
+                "Brown Sugar" => {quantity: 0.005, units: ""}}
+    actual = pantry.format_recipe(recipe)
 
-    assert_instance_of Recipe, recipe
-    assert_equal 5, calculated[0]
-    assert_equal 15, calculated[1]
-    assert_equal 5, calculated[2]
+    assert_equal expected, actual
   end
 
-  def test_it_can_convert_universal_units_to_centi_and_milli
-    pantry = Pantry.new
-    recipe = Recipe.new('Oatmeal Raisin Cookies')
-    recipe.add_ingredient('Oatmeal', 500)
-    recipe.add_ingredient('Raisins', 20)
-    recipe.add_ingredient('Nutmeg', 0.05)
-    converted = pantry.convert_units(recipe)
 
-    assert_equal 5, converted[0][:quantity]
-    assert_equal 20, converted[1][:quantity]
-    assert_equal 5, converted[2][:quantity]
-    assert_equal 'Centi-Units', converted['Oatmeal'][:units]
-    assert_equal 'Universal Units', converted['Raisins'][:units]
-    assert_equal 'Milli-Units', converted['Nutmeg'][:units]
-  end
+  # def test_it_can_convert_units
+  #   pantry = Pantry.new
+  #   recipe = Recipe.new('Oatmeal Raisin Cookies')
+  #   recipe.add_ingredient('Oatmeal', 500)
+  #   recipe.add_ingredient('Raisins', 15)
+  #   recipe.add_ingredient('Brown Sugar', 0.005)
+  #   actual = pantry.convert_units(recipe)
+  #
+  #   assert_instance_of Hash, actual
+  #   # assert_equal 5,
+  #   # assert_equal 15,
+  #   # assert_equal 5,
+  #
+  # end
 end

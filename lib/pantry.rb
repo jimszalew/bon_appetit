@@ -3,11 +3,13 @@ require_relative 'recipe'
 class Pantry
 
   attr_reader :stock,
-              :converted
+              :formatted,
+              :calculated
 
   def initialize
     @stock = {}
-    @converted = {}
+    @formatted = {}
+    @calculated = []
   end
 
   def stock_check(ingredient_name)
@@ -23,21 +25,24 @@ class Pantry
     recipe = Recipe.new(name)
   end
 
-  def calculate(recipe)
-    recipe.ingredients.values.map do |amount|
-      if amount < 1
-        amount =  amount * 1000
-      elsif amount  > 100
-        amount = amount / 100
-      else
-        amount
-      end
+  def format_recipe(recipe)
+    ingredients = recipe.ingredients
+    ingredients.each_pair do |name, amount|
+      formatted.store(name, ({quantity: amount, units: ""}))
     end
+    formatted
   end
 
-  def convert_units(recipe)
-    recipe.ingredients do |ingredient|
-      converted.store(ingredient[0])
-    end
-  end
+  # def convert_units(formatted)
+  #   items = formatted.values
+  #   items.map do |data|
+  #     if data[:quantity] >= 100
+  #       data[:quantity] = data[:quantity] / 100 && data[:units] = "Centi-Units"
+  #     elsif data[:quantity] < 1
+  #       data[:quantity] = data[:quantity] * 100 && data[:units] = "Milli-Units"
+  #     else
+  #       data[:quantity] =
+  #     end
+  #   end
+  # end
 end
