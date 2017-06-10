@@ -68,7 +68,7 @@ class PantryTest < Minitest::Test
     recipe.add_ingredient('Raisins', 15)
     recipe.add_ingredient('Brown Sugar', 0.005)
     actual = pantry.convert_units(recipe)
-binding.pry
+# binding.pry
     assert_instance_of Hash, actual
     assert_equal 5, actual['Oatmeal'][:quantity]
     assert_equal 15, actual['Raisins'][:quantity]
