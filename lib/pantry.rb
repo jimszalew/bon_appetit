@@ -25,24 +25,29 @@ class Pantry
     recipe = Recipe.new(name)
   end
 
-  def format_recipe(recipe)
+  def convert_units(recipe)
     ingredients = recipe.ingredients
-    ingredients.each_pair do |name, amount|
-      formatted.store(name, ({quantity: amount, units: ""}))
-    end
-    formatted
+    ingredients.map do |ingredient, quantity|
+      ingredients[ingredient] = if quantity < 1
+                                  milli_units(quantity)
+                                elsif quantity >= 100
+                                  centi_units(quantity)
+                                else
+                                  universal_units(quantity)
+                                end
+                              end
+    ingredients
   end
 
-  # def convert_units(formatted)
-  #   items = formatted.values
-  #   items.map do |data|
-  #     if data[:quantity] >= 100
-  #       data[:quantity] = data[:quantity] / 100 && data[:units] = "Centi-Units"
-  #     elsif data[:quantity] < 1
-  #       data[:quantity] = data[:quantity] * 100 && data[:units] = "Milli-Units"
-  #     else
-  #       data[:quantity] =
-  #     end
-  #   end
-  # end
+  def milli_units(quantity)
+    {quantity: (quantity * 1000).round, units: 'Milli-Units'}
+  end
+
+  def centi_units(quantity)
+    {quantity: (quantity / 100), units: 'Centi-Units'}
+  end
+
+  def universal_units(quantity)
+    {quantity: quantity, units: 'Universal Units'}
+  end
 end

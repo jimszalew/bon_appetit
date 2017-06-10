@@ -61,34 +61,21 @@ class PantryTest < Minitest::Test
     assert_equal 5, recipe.ingredients['Brown Sugar']
   end
 
-  def test_it_can_convert_recipe_to_readable_format
+  def test_it_can_convert_units
     pantry = Pantry.new
     recipe = Recipe.new('Oatmeal Raisin Cookies')
-    recipe.add_ingredient('Oatmeal', 250)
+    recipe.add_ingredient('Oatmeal', 500)
     recipe.add_ingredient('Raisins', 15)
     recipe.add_ingredient('Brown Sugar', 0.005)
-# binding.pry
-    expected = {"Oatmeal"     => {quantity: 250, units: ""},
-                "Raisins"     => {quantity: 15, units: ""},
-                "Brown Sugar" => {quantity: 0.005, units: ""}}
-    actual = pantry.format_recipe(recipe)
+    actual = pantry.convert_units(recipe)
+binding.pry
+    assert_instance_of Hash, actual
+    assert_equal 5, actual['Oatmeal'][:quantity]
+    assert_equal 15, actual['Raisins'][:quantity]
+    assert_equal 5, actual['Brown Sugar'][:quantity]
+    assert_equal 'Centi-Units', actual['Oatmeal'][:units]
+    assert_equal 'Universal Units', actual['Raisins'][:units]
+    assert_equal 'Milli-Units', actual['Brown Sugar'][:units]
 
-    assert_equal expected, actual
   end
-
-
-  # def test_it_can_convert_units
-  #   pantry = Pantry.new
-  #   recipe = Recipe.new('Oatmeal Raisin Cookies')
-  #   recipe.add_ingredient('Oatmeal', 500)
-  #   recipe.add_ingredient('Raisins', 15)
-  #   recipe.add_ingredient('Brown Sugar', 0.005)
-  #   actual = pantry.convert_units(recipe)
-  #
-  #   assert_instance_of Hash, actual
-  #   # assert_equal 5,
-  #   # assert_equal 15,
-  #   # assert_equal 5,
-  #
-  # end
 end
