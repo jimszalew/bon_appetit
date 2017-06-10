@@ -119,31 +119,7 @@ pantry.print_shopping_list
 # => "* Cheese: 20\n* Flour: 20\n* Spaghetti Noodles: 10\n* Marinara Sauce: 10"
 ```
 
-
 #### Iteration 4
-
-This works well as long as all of our units are evenly divisible, but lets see if we can handle mixed units.
-
-```ruby
-# Building our recipe
-r = Recipe.new("Spicy Cheese Pizza")
-r.add_ingredient("Cayenne Pepper", 1.025)
-r.add_ingredient("Cheese", 75)
-r.add_ingredient("Flour", 550)
-
-pantry = Pantry.new
-
-# Convert units for this recipe
-
-pantry.convert_units(r)
-
-=> {"Cayenne Pepper" => [{quantity: 25, units: "Milli-Units"},
-                         {quantity: 1, units: "Universal Units"}],
-    "Cheese"         => [{quantity: 75, units: "Universal Units"}],
-    "Flour"          => [{quantity: 5, units: "Centi-Units"},
-                         {quantity: 50, units: "Universal Units"}]}
-```
-#### Iteration 5
 
 Add a feature to your pantry that can recommend recipes for us to cook based on what
 ingredients we currently have in stock.
