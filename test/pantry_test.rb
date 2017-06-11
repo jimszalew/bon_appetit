@@ -140,9 +140,9 @@ class PantryTest < Minitest::Test
     pantry.restock("Raw nuts", 20)
     pantry.restock("Salt", 20)
 
-    actual = pantry.what_can_i_make
-    expected = ["Pickles", "Peanuts"]
-binding.pry
+    actual = pantry.cookbook
+    expected ={"Cheese Pizza"=>{"Cheese"=>20, "Flour"=>20},  "Pickles"=>{"Brine"=>10, "Cucumbers"=>30}, "Peanuts"=>{"Raw nuts"=>10, "Salt"=>10}}
+# binding.pry
     assert_equal actual, expected
   end
 end
