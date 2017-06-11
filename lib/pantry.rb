@@ -59,4 +59,13 @@ class Pantry
       end
     end
   end
+
+  def print_shopping_list
+    print_out = ""
+    shopping_list.each_pair do |item, quantity|
+      print_out += "* #{item}: #{quantity}\n"
+    end
+    puts print_out
+    print_out
+  end
 end
