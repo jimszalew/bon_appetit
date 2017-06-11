@@ -3,13 +3,11 @@ require_relative 'recipe'
 class Pantry
 
   attr_reader :stock,
-              :formatted,
-              :calculated
+              :shopping_list
 
   def initialize
     @stock = {}
-    @formatted = {}
-    @calculated = []
+    @shopping_list = {}
   end
 
   def stock_check(ingredient_name)
@@ -49,5 +47,16 @@ class Pantry
 
   def universal_units(quantity)
     {quantity: quantity, units: 'Universal Units'}
+  end
+
+  def add_to_shopping_list(recipe)
+    items = recipe.ingredients
+    items.map do |item, quantity|
+      if shopping_list.has_key?(item)
+        shopping_list[item] += quantity
+      else
+        shopping_list.store(item, quantity)
+      end
+    end
   end
 end

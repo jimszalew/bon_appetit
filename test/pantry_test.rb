@@ -68,7 +68,7 @@ class PantryTest < Minitest::Test
     recipe.add_ingredient('Raisins', 15)
     recipe.add_ingredient('Brown Sugar', 0.005)
     actual = pantry.convert_units(recipe)
-# binding.pry
+
     assert_instance_of Hash, actual
     assert_equal 5, actual['Oatmeal'][:quantity]
     assert_equal 15, actual['Raisins'][:quantity]
@@ -76,6 +76,37 @@ class PantryTest < Minitest::Test
     assert_equal 'Centi-Units', actual['Oatmeal'][:units]
     assert_equal 'Universal Units', actual['Raisins'][:units]
     assert_equal 'Milli-Units', actual['Brown Sugar'][:units]
+  end
 
+  def test_it_can_make_a_shopping_list_from_a_recipe
+    pantry = Pantry.new
+    recipe = Recipe.new('Oatmeal Raisin Cookies')
+    recipe.add_ingredient('Oatmeal', 500)
+    recipe.add_ingredient('Raisins', 15)
+    recipe.add_ingredient('Brown Sugar', 0.005)
+    pantry.add_to_shopping_list(recipe)
+    actual = pantry.shopping_list
+    expected ={"Oatmeal"=>500, "Raisins"=>15, "Brown Sugar"=>0.005}
+
+    assert_instance_of Hash, actual
+    assert_equal expected, actual
+  end
+
+  def test_it_can_make_a_shopping_list_from_more_than_one_recipe
+    pantry = Pantry.new
+    recipe_1 = Recipe.new('Oatmeal Raisin Cookies')
+    recipe_1.add_ingredient('Oatmeal', 500)
+    recipe_1.add_ingredient('Raisins', 15)
+    recipe_1.add_ingredient('Brown Sugar', 0.005)
+    pantry.add_to_shopping_list(recipe_1)
+    recipe_2 = Recipe.new('Curry Chicken Salad')
+    recipe_2.add_ingredient('Chicken', 500)
+    recipe_2.add_ingredient('Raisins', 15)
+    recipe_2.add_ingredient('Curry Powder', 0.025)
+    pantry.add_to_shopping_list(recipe_2)
+    actual = pantry.shopping_list
+    expected ={"Oatmeal"=>500, "Raisins"=>30, "Brown Sugar"=>0.005, "Chicken"=>500, "Curry Powder"=>0.025}
+
+    assert_equal expected, actual
   end
 end
