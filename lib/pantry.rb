@@ -3,11 +3,13 @@ require_relative 'recipe'
 class Pantry
 
   attr_reader :stock,
-              :shopping_list
+              :shopping_list,
+              :cookbook
 
   def initialize
     @stock = {}
     @shopping_list = {}
+    @cookbook = {}
   end
 
   def stock_check(ingredient_name)
@@ -67,5 +69,14 @@ class Pantry
     end
     puts print_out
     print_out
+  end
+
+  def add_to_cookbook(recipe)
+    cookbook.store(recipe.name, recipe.ingredients)
+  end
+
+  def what_can_i_make
+    # amount_on_hand = stock_check(ingredient_name)
+    # amount_required = recipe.ingredients[ingredient_name]
   end
 end

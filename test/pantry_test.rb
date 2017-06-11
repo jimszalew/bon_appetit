@@ -94,19 +94,55 @@ class PantryTest < Minitest::Test
 
   def test_it_can_make_a_shopping_list_from_more_than_one_recipe
     pantry = Pantry.new
+
     recipe_1 = Recipe.new('Oatmeal Raisin Cookies')
     recipe_1.add_ingredient('Oatmeal', 500)
     recipe_1.add_ingredient('Raisins', 15)
     recipe_1.add_ingredient('Brown Sugar', 0.005)
-    pantry.add_to_shopping_list(recipe_1)
+
     recipe_2 = Recipe.new('Curry Chicken Salad')
     recipe_2.add_ingredient('Chicken', 500)
     recipe_2.add_ingredient('Raisins', 15)
     recipe_2.add_ingredient('Curry Powder', 0.025)
+
+    pantry.add_to_shopping_list(recipe_1)
     pantry.add_to_shopping_list(recipe_2)
+
     actual = pantry.shopping_list
     expected ={"Oatmeal"=>500, "Raisins"=>30, "Brown Sugar"=>0.005, "Chicken"=>500, "Curry Powder"=>0.025}
 
     assert_equal expected, actual
+  end
+
+  def test_it_can_recommend_recipes_based_on_whats_in_stock
+    pantry = Pantry.new
+
+    r1 = Recipe.new("Cheese Pizza")
+    r1.add_ingredient("Cheese", 20)
+    r1.add_ingredient("Flour", 20)
+
+    r2 = Recipe.new("Pickles")
+    r2.add_ingredient("Brine", 10)
+    r2.add_ingredient("Cucumbers", 30)
+
+    r3 = Recipe.new("Peanuts")
+    r3.add_ingredient("Raw nuts", 10)
+    r3.add_ingredient("Salt", 10)
+
+    pantry.add_to_cookbook(r1)
+    pantry.add_to_cookbook(r2)
+    pantry.add_to_cookbook(r3)
+
+    pantry.restock("Cheese", 10)
+    pantry.restock("Flour", 20)
+    pantry.restock("Brine", 40)
+    pantry.restock("Pickles", 40)
+    pantry.restock("Raw nuts", 20)
+    pantry.restock("Salt", 20)
+
+    actual = pantry.what_can_i_make
+    expected = ["Pickles", "Peanuts"]
+binding.pry
+    assert_equal actual, expected
   end
 end
