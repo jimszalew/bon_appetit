@@ -9,7 +9,7 @@ class Pantry
   def initialize
     @stock = {}
     @shopping_list = {}
-    @cookbook = {}
+    @cookbook = []
   end
 
   def stock_check(ingredient_name)
@@ -72,11 +72,10 @@ class Pantry
   end
 
   def add_to_cookbook(recipe)
-    cookbook.store(recipe.name, recipe.ingredients)
+    cookbook << recipe
   end
 
   def what_can_i_make
-    # amount_on_hand = stock_check(ingredient_name)
-    # amount_required = recipe.ingredients[ingredient_name]
+
   end
 end
