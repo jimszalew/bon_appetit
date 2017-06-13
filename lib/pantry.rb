@@ -18,7 +18,11 @@ class Pantry
   end
 
   def restock(ingredient_name, amount)
-    stock.store(ingredient_name, amount)
+    if stock.has_key?(ingredient_name)
+      stock[ingredient_name] += amount
+    else
+      stock[ingredient_name] = amount
+    end
   end
 
   def add_recipe(recipe)
