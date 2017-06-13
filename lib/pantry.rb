@@ -86,4 +86,17 @@ class Pantry
       end
     end
   end
+
+  def how_many_can_i_make
+    what_can_i_make.reduce({}) do |hash, recipe|
+      hash[recipe] = (how_much(recipe)).min
+      hash
+    end
+  end
+
+  def how_much(recipe)
+    cookbook[recipe].keys.map do |ingredient|
+      ((stock[ingredient])/(cookbook[recipe][ingredient]))
+    end
+  end
 end

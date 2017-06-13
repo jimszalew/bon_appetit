@@ -164,7 +164,75 @@ class PantryTest < Minitest::Test
 
     actual = pantry.what_can_i_make
     expected = ["Pickles", "Peanuts"]
-# binding.pry
+
     assert_equal expected, actual
+  end
+
+  def test_it_knows_how_many_of_a_recipe_can_be_made_with_available_stock
+    pantry = Pantry.new
+
+    r1 = Recipe.new("Cheese Pizza")
+    r1.add_ingredient("Cheese", 20)
+    r1.add_ingredient("Flour", 20)
+
+    r2 = Recipe.new("Pickles")
+    r2.add_ingredient("Brine", 10)
+    r2.add_ingredient("Cucumbers", 30)
+
+    r3 = Recipe.new("Peanuts")
+    r3.add_ingredient("Raw nuts", 10)
+    r3.add_ingredient("Salt", 10)
+
+    pantry.add_to_cookbook(r1)
+    pantry.add_to_cookbook(r2)
+    pantry.add_to_cookbook(r3)
+
+    pantry.restock("Cheese", 10)
+    pantry.restock("Flour", 20)
+    pantry.restock("Brine", 40)
+    pantry.restock("Cucumbers", 40)
+    pantry.restock("Raw nuts", 20)
+    pantry.restock("Salt", 20)
+
+    actual = pantry.how_many_can_i_make
+
+    assert_instance_of Hash, actual
+    assert_equal ["Pickles", "Peanuts"], actual.keys
+    assert_equal [1, 2], actual.values
+  end
+
+  def test_it_knows_how_much_of_one_ingredient_per_recipe
+    pantry = Pantry.new
+
+    r1 = Recipe.new("Cheese Pizza")
+    r1.add_ingredient("Cheese", 20)
+    r1.add_ingredient("Flour", 20)
+
+    r2 = Recipe.new("Pickles")
+    r2.add_ingredient("Brine", 10)
+    r2.add_ingredient("Cucumbers", 30)
+
+    r3 = Recipe.new("Peanuts")
+    r3.add_ingredient("Raw nuts", 10)
+    r3.add_ingredient("Salt", 10)
+
+    pantry.add_to_cookbook(r1)
+    pantry.add_to_cookbook(r2)
+    pantry.add_to_cookbook(r3)
+
+    pantry.restock("Cheese", 10)
+    pantry.restock("Flour", 20)
+    pantry.restock("Brine", 40)
+    pantry.restock("Cucumbers", 40)
+    pantry.restock("Raw nuts", 20)
+    pantry.restock("Salt", 20)
+
+    actual_1 = pantry.how_much(r1.name)
+    actual_2 = pantry.how_much(r2.name)
+    actual_3 = pantry.how_much(r3.name)
+
+    assert_equal [0, 1], actual_1
+    assert_equal [4, 1], actual_2
+    assert_equal [2, 2], actual_3
   end
 end
