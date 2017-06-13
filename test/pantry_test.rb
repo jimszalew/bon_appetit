@@ -22,7 +22,7 @@ class PantryTest < Minitest::Test
 
   def test_it_returns_zero_if_ingredient_isnt_in_pantry
     pantry = Pantry.new
-    check = pantry.stock_check('Oatmeal')
+    check = pantry.stock_check('Cheese')
 
     assert_equal 0, check
   end
@@ -45,7 +45,7 @@ class PantryTest < Minitest::Test
     pantry.restock('Raisins', 100)
     check_2 = pantry.stock_check('Raisins')
 
-    assert_equal 100, check_2
+    assert_equal 120, check_2
   end
 
   def test_it_can_build_a_recipe
@@ -135,39 +135,38 @@ class PantryTest < Minitest::Test
 
     actual = pantry.cookbook
 
-    assert_instance_of Array, actual
-    assert_instance_of Recipe, actual.sample
+    assert_instance_of Hash, actual
   end
 
-  # def test_it_knows_what_recipes_you_can_make_based_on_available_ingredients
-  #   pantry = Pantry.new
-  #
-  #   r1 = Recipe.new("Cheese Pizza")
-  #   r1.add_ingredient("Cheese", 20)
-  #   r1.add_ingredient("Flour", 20)
-  #
-  #   r2 = Recipe.new("Pickles")
-  #   r2.add_ingredient("Brine", 10)
-  #   r2.add_ingredient("Cucumbers", 30)
-  #
-  #   r3 = Recipe.new("Peanuts")
-  #   r3.add_ingredient("Raw nuts", 10)
-  #   r3.add_ingredient("Salt", 10)
-  #
-  #   pantry.add_to_cookbook(r1)
-  #   pantry.add_to_cookbook(r2)
-  #   pantry.add_to_cookbook(r3)
-  #
-  #   pantry.restock("Cheese", 10)
-  #   pantry.restock("Flour", 20)
-  #   pantry.restock("Brine", 40)
-  #   pantry.restock("Pickles", 40)
-  #   pantry.restock("Raw nuts", 20)
-  #   pantry.restock("Salt", 20)
-  #
-  #   actual = pantry.what_can_i_make
-  #   expected = ["Pickles", "Peanuts"]
-  #
-  #   assert_equal expected, actual
-  # end
+  def test_it_knows_what_recipes_you_can_make_based_on_available_ingredients
+    pantry = Pantry.new
+
+    r1 = Recipe.new("Cheese Pizza")
+    r1.add_ingredient("Cheese", 20)
+    r1.add_ingredient("Flour", 20)
+
+    r2 = Recipe.new("Pickles")
+    r2.add_ingredient("Brine", 10)
+    r2.add_ingredient("Cucumbers", 30)
+
+    r3 = Recipe.new("Peanuts")
+    r3.add_ingredient("Raw nuts", 10)
+    r3.add_ingredient("Salt", 10)
+
+    pantry.add_to_cookbook(r1)
+    pantry.add_to_cookbook(r2)
+    pantry.add_to_cookbook(r3)
+
+    pantry.restock("Cheese", 10)
+    pantry.restock("Flour", 20)
+    pantry.restock("Brine", 40)
+    pantry.restock("Cucumbers", 40)
+    pantry.restock("Raw nuts", 20)
+    pantry.restock("Salt", 20)
+
+    actual = pantry.what_can_i_make
+    expected = ["Pickles", "Peanuts"]
+
+    assert_equal expected, actual
+  end
 end
