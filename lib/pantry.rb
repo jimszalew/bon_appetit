@@ -30,17 +30,20 @@ class Pantry
   end
 
   def convert_units(recipe)
-    items = recipe.ingredients
-    items.map do |item, quantity|
-      items[item] = if quantity < 1
-                      milli_units(quantity)
-                    elsif quantity >= 100
-                      centi_units(quantity)
-                    else
-                      universal_units(quantity)
-                    end
-                  end
-    items
+    recipe.ingredients.map do |item, quantity|
+      recipe.ingredients[item] = converter_helper(quantity)
+    end
+    recipe.ingredients
+  end
+
+  def converter_helper(quantity)
+    if quantity < 1
+      milli_units(quantity)
+    elsif quantity >= 100
+      centi_units(quantity)
+    else
+      universal_units(quantity)
+    end
   end
 
   def milli_units(quantity)
@@ -56,13 +59,16 @@ class Pantry
   end
 
   def add_to_shopping_list(recipe)
-    items = recipe.ingredients
-    items.map do |item, quantity|
-      if shopping_list.has_key?(item)
-        shopping_list[item] += quantity
-      else
-        shopping_list.store(item, quantity)
-      end
+    recipe.ingredients.map do |item, quantity|
+      list_prepper(item, quantity)
+    end
+  end
+
+  def list_prepper(item, quantity)
+    if shopping_list.has_key?(item)
+      shopping_list[item] += quantity
+    else
+      shopping_list.store(item, quantity)
     end
   end
 
